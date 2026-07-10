@@ -1,0 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+#container {
+  margin: auto;
+  width: fit-content;
+  padding: 10px;
+  background-color: gray;
+  border-radius: 10px;
+}
+
+#display {
+  padding: 2px;
+  display: flex;
+  justify-content: flex-end;
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin: auto;
+  padding: 5px;
+}
+
+.button {
+  background-color: rgb(94, 93, 93);
+  border: 1px solid black;
+  padding: 5px;
+  width: 24%;
+  border-radius: 5px;
+}
