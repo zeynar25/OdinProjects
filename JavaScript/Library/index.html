@@ -7,6 +7,44 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
+    <div id="container">
+      <form id="bookForm">
+        <input
+          type="text"
+          name="title"
+          id="bookTitle"
+          placeholder="Book Title"
+        />
+        <input
+          type="text"
+          name="author"
+          id="bookAuthor"
+          placeholder="Book Author"
+        />
+        <input
+          type="number"
+          name="pages"
+          id="bookPages"
+          placeholder="Number of Pages"
+        />
+        <button type="submit" id="addBookButton">Add Book</button>
+      </form>
+
+      <div id="libraryContainer">
+        <table id="library">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Pages</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="libraryContent"></tbody>
+        </table>
+      </div>
+    </div>
+
     <script src="./script.js"></script>
   </body>
 </html>

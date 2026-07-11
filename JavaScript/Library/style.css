@@ -1,0 +1,32 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  gap: 20px;
+}
+
+#libraryContainer {
+  overflow: auto;
+  max-height: 300px;
+}
+
+#library {
+  border-collapse: collapse;
+}
+
+#libraryContent td {
+  padding: 5px 10px;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
