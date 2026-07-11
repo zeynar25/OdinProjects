@@ -71,6 +71,7 @@ function addToLibrary(title, author, pages, preAdded = false) {
     alert(`"${book.title}" added to library`);
   }
 
+  library.sort((a, b) => a.title.localeCompare(b.title));
   updateLibraryDisplay();
 
   return book;
