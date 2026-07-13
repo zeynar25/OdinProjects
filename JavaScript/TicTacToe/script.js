@@ -6,7 +6,7 @@ const gameBoard = (() => {
   const initialize = () => {
     thisBoard = ["", "", "", "", "", "", "", "", ""];
 
-    symbolSelection.style.display = "none";
+    mainMenuBtn.style.display = "block";
     restartBtn.style.display = "block";
     restartBtn.textContent = "Restart Game";
 
@@ -83,7 +83,7 @@ const gameBoard = (() => {
   return { initialize, updateBoard, isDraw, isGameOver, getGameBoard };
 })();
 
-const game = (() => {
+const gameController = (() => {
   let player;
   let computer;
 
@@ -137,6 +137,10 @@ const game = (() => {
   return { start, handleMove, restart };
 })();
 
+const displayController = () => {
+  // to be implemented.
+};
+
 function createPlayer(name, symbol) {
   const makeRandomMove = () => {
     const freeSquares = [];
@@ -161,24 +165,28 @@ function attachSquareListeners() {
   const squares = document.querySelectorAll(".square");
   squares.forEach((square, index) => {
     square.addEventListener("click", () => {
-      game.handleMove(index);
+      gameController.handleMove(index);
     });
   });
 }
 
-const symbolSelection = document.getElementById("symbolSelection");
+const menu = document.getElementById("menu");
 const board = document.getElementById("gameBoard");
 const gameMessage = document.getElementById("gameMessage");
+
 const restartBtn = document.getElementById("restartBtn");
 restartBtn.addEventListener("click", () => {
-  game.restart();
+  gameController.restart();
 });
 
-const menu = document.getElementById("menu");
+const mainMenuBtn = document.getElementById("mainMenuBtn");
+mainMenuBtn.addEventListener("click", () => {
+  window.location.reload();
+});
+
 const startBtn = document.getElementById("startBtn");
 startBtn.addEventListener("click", () => {
   event.preventDefault();
-  menu.style.display = "none";
 
   const playerName = document.getElementById("playerName").value;
 
@@ -186,5 +194,14 @@ startBtn.addEventListener("click", () => {
     'input[name="symbol"]:checked',
   ).value;
 
-  game.start(playerName === "" ? "Player" : playerName, selectedSymbol);
+  if (selectedSymbol === null) {
+    alert("Please select a symbol (X or O) to start the game.");
+    return;
+  }
+
+  menu.style.display = "none";
+  gameController.start(
+    playerName === "" ? "Player" : playerName,
+    selectedSymbol,
+  );
 });
