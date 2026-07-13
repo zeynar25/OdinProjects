@@ -84,19 +84,24 @@ const gameBoard = (() => {
 })();
 
 const game = (() => {
-  let winner;
   let player;
   let computer;
 
-  const start = (symbol) => {
+  const start = (playerName, symbol) => {
     gameBoard.initialize();
     let moves = 0;
-    player = createPlayer("Player", symbol);
+    player = createPlayer(playerName, symbol);
     computer = createPlayer("Computer", symbol === "X" ? "O" : "X");
 
     if (symbol === "O") {
       handleMove(computer.makeRandomMove(), computer.symbol, false);
     }
+  };
+
+  const restart = () => {
+    gameBoard.initialize();
+    gameMessage.textContent = "";
+    restartBtn.textContent = "Restart Game";
   };
 
   const handleMove = (index, symbol = player.symbol, playerToMove = true) => {
@@ -129,9 +134,7 @@ const game = (() => {
     }
   };
 
-  const getWinner = () => winner;
-
-  return { start, handleMove, getWinner };
+  return { start, handleMove, restart };
 })();
 
 function createPlayer(name, symbol) {
@@ -168,15 +171,20 @@ const board = document.getElementById("gameBoard");
 const gameMessage = document.getElementById("gameMessage");
 const restartBtn = document.getElementById("restartBtn");
 restartBtn.addEventListener("click", () => {
-  location.reload();
+  game.restart();
 });
 
-const symbol = document
-  .querySelector("#symbols")
-  .addEventListener("click", (event) => {
-    if (event.target.classList.contains("symbol")) {
-      const selectedSymbol = event.target.textContent;
-      console.log(`Player chose to play as ${selectedSymbol}`);
-      game.start(selectedSymbol);
-    }
-  });
+const menu = document.getElementById("menu");
+const startBtn = document.getElementById("startBtn");
+startBtn.addEventListener("click", () => {
+  event.preventDefault();
+  menu.style.display = "none";
+
+  const playerName = document.getElementById("playerName").value;
+
+  const selectedSymbol = document.querySelector(
+    'input[name="symbol"]:checked',
+  ).value;
+
+  game.start(playerName === "" ? "Player" : playerName, selectedSymbol);
+});

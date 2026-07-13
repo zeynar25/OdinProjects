@@ -9,12 +9,41 @@
   <body>
     <div id="container">
       <h1>Tic Tac Toe</h1>
-      <div id="symbolSelection">
-        <p>Play as:</p>
-        <div id="symbols">
-          <div class="symbol">X</div>
-          <div class="symbol">O</div>
-        </div>
+      <div id="menu">
+        <form action="">
+          <input
+            type="text"
+            id="playerName"
+            name="playerName"
+            placeholder="Enter your name"
+            required
+          />
+
+          <div id="symbolSelection">
+            <label>Play as:</label>
+
+            <div id="symbols">
+              <input
+                type="radio"
+                name="symbol"
+                id="symbolX"
+                value="X"
+                class="symbol-radio"
+              />
+              <label for="symbolX" class="symbol">X</label>
+
+              <input
+                type="radio"
+                name="symbol"
+                id="symbolO"
+                value="O"
+                class="symbol-radio"
+              />
+              <label for="symbolO" class="symbol">O</label>
+            </div>
+          </div>
+          <button type="submit" id="startBtn">Start Game</button>
+        </form>
       </div>
       <div id="gameBoard"></div>
       <div id="gameMessage"></div>
