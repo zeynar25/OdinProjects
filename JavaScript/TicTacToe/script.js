@@ -110,12 +110,14 @@ const game = (() => {
           winner = computer.name;
         }
 
+        console.log(`${winner} wins!`);
         gameMessage.textContent = `${winner} wins!`;
         restartBtn.textContent = "Play Again";
         return;
       }
 
       if (gameBoard.isDraw()) {
+        console.log("It's a draw!");
         gameMessage.textContent = "It's a draw!";
         restartBtn.textContent = "Play Again";
         return;
@@ -174,6 +176,7 @@ const symbol = document
   .addEventListener("click", (event) => {
     if (event.target.classList.contains("symbol")) {
       const selectedSymbol = event.target.textContent;
+      console.log(`Player chose to play as ${selectedSymbol}`);
       game.start(selectedSymbol);
     }
   });
