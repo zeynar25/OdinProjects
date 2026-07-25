@@ -1,0 +1,8 @@
+npm init -y --init-type=module
+npm install -D webpack webpack-cli
+
+npx webpack -> to run the webpack
+npm install -D html-webpack-plugin  -> so webpack can bundle html
+npm install -D style-loader css-loader -> so webpack can bundle css
+
+populate src folder only.
