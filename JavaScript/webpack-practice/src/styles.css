@@ -5,7 +5,14 @@
 }
 
 body {
-  height: auto;
-  background-color: rebeccapurple;
-  color: white;
+  height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+}
+
+body img {
+  height: 100px;
+  width: 100px;
 }

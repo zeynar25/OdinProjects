@@ -5,4 +5,6 @@ npx webpack -> to run the webpack
 npm install -D html-webpack-plugin  -> so webpack can bundle html
 npm install -D style-loader css-loader -> so webpack can bundle css
 
+npm install -D html-loader  -> detect image files in html template
+
 populate src folder only.
