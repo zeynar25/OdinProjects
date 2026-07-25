@@ -7,4 +7,8 @@ npm install -D style-loader css-loader -> so webpack can bundle css
 
 npm install -D html-loader  -> detect image files in html template
 
+npm install -D webpack-dev-server   -> prevents having to run npx webpack to rebundle with every change
+
+npx webpack serve   -> shows the site via http://localhost:8080/ 
+
 populate src folder only.

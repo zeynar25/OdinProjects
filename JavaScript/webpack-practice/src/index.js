@@ -7,3 +7,5 @@ console.log(greeting);
 const image = document.createElement("img");
 image.src = pikachu;
 document.body.appendChild(image);
+
+console.log("showing a picture of Pikachu");
