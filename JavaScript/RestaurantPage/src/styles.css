@@ -6,6 +6,7 @@
 
 body {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background: black;
 }
@@ -52,14 +53,92 @@ nav button {
   color: white;
 }
 
-nav button:hover {
+.nav-button:hover {
   background: white;
   color: black;
   border-radius: 5px;
 }
 
+.nav-button.active {
+  background: white;
+  color: black;
+  border-radius: 5px;
+}
+
+#content {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px 100px;
+}
+
+#content .home-heading {
+  font-size: 50px;
+  max-width: 500px;
+}
+
+#content .home-description {
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+#content .menu-heading {
+  font-size: 40px;
+  text-align: center;
+}
+
+#content .menu-group {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+#content .menu-box {
+  flex: 1 1 240px;
+  max-width: 320px;
+  padding: 20px;
+}
+
+#content .menu-subheading {
+  font-size: 30px;
+  margin-top: 0;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+#content .menu-item {
+  font-size: 20px;
+  margin-bottom: 5px;
+  list-style-type: none;
+}
+
 @media (max-width: 500px) {
   header {
     flex-direction: column;
+  }
+
+  #content {
+    padding: 20px;
+  }
+
+  #content .home-heading {
+    font-size: 40px;
+  }
+
+  #content .home-description {
+    font-size: 15px;
+  }
+
+  #content .menu-group {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  #content .menu-box {
+    text-align: center;
   }
 }
