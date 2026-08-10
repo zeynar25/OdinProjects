@@ -10,6 +10,7 @@ export default {
     clean: true,
   },
 
+  //  If we don’t do this, any error messages we get won’t necessarily match up to the correct files and line numbers from our development code
   devtool: "eval-source-map",
   devServer: {
     watchFiles: ["./src/template.html"],
