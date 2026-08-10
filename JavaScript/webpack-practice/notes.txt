@@ -1,7 +1,13 @@
-npm init -y --init-type=module
-npm install -D webpack webpack-cli
+npm init -y --init-type=module      -> creates package.json
+
+npm install -D webpack webpack-cli  -> creates node_modules and package-lock.json
+
+create a src and dist dir
+
+set up the webpack.config.js
 
 npx webpack -> to run the webpack
+
 npm install -D html-webpack-plugin  -> so webpack can bundle html
 npm install -D style-loader css-loader -> so webpack can bundle css
 
