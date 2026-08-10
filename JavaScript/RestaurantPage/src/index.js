@@ -1,3 +1,3 @@
 import "./styles.css";
-
-console.log("Hello World!");
+import { body } from "./scripts/bg.js";
+import { header } from "./scripts/header.js";
