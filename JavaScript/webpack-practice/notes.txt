@@ -18,3 +18,16 @@ npm install -D webpack-dev-server   -> prevents having to run npx webpack to reb
 npx webpack serve   -> shows the site via http://localhost:8080/ 
 
 populate src folder only.
+
+
+
+
+// It is recommended to separate webpack configurations for each environment.
+webpack.config.js turns into
+    -> webpack.common.js
+    -> webpack.dev.js
+    -> webpack.prod.js
+
+    npm install -D webpack-merge
+
+    src: https://webpack.js.org/guides/production/
