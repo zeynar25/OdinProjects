@@ -3,3 +3,33 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+body {
+  display: flex;
+  min-height: 100vh;
+}
+
+#projects {
+  border-right: 1px solid black;
+}
+
+#project-nav {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+}
+
+.project-title {
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.nav-button {
+  border: 0;
+  padding: 10px 20px;
+}
+
+.nav-button:hover {
+  color: white;
+  background-color: black;
+}
