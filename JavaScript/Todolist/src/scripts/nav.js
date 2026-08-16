@@ -9,6 +9,10 @@ export function renderNav(nav, projects, activeProjectId = projects[0]?.id) {
     const isActive = project.id === activeProjectId;
     button.classList.toggle("active", isActive);
 
+    if (isActive) {
+      console.log(`Active project: ${project.name} (ID: ${project.id})`);
+    }
+
     nav.appendChild(button);
   });
 }

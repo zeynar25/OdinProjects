@@ -5,15 +5,24 @@ import "./styles.css";
 console.log("Todo List App");
 
 const projects = [new Project("Default", "The default project")];
+let activeProjectId = projects[0].id;
 
 const projectNav = document.querySelector("#project-nav");
 
 function refreshNav() {
   projectNav.innerHTML = "";
-  renderNav(projectNav, projects);
+  renderNav(projectNav, projects, activeProjectId);
 }
 
 refreshNav();
+
+projectNav.addEventListener("click", (event) => {
+  const button = event.target.closest(".nav-button");
+  if (!button) return;
+
+  activeProjectId = button.value;
+  refreshNav();
+});
 
 const projectFormContainer = document.querySelector("#project-form-container");
 const nameInput = document.querySelector("#project-input-name");
