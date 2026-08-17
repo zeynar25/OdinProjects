@@ -105,4 +105,35 @@ todoForm.addEventListener("submit", (event) => {
   refreshTodoList();
 });
 
+todoListContainer.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-action]");
+  if (!button) return;
+
+  const todoItem = event.target.closest(".todo-item");
+  if (!todoItem) return;
+
+  const action = button.dataset.action;
+  const id = todoItem.dataset.id;
+  const index = todoList.findIndex((item) => item.id === id);
+
+  if (index === -1) {
+    console.log(`Item with id ${id} not found in todoList`);
+  }
+
+  if (action === "edit") {
+    console.log(`editing ${id} item`);
+    // to implement
+  } else if (action === "done") {
+    console.log(`marking ${id} item as done`);
+    todoList[index].isDone = !todoList[index].isDone;
+    refreshTodoList();
+  } else if (action === "delete") {
+    console.log(`deleting ${id} item`);
+    todoList.splice(index, 1);
+    refreshTodoList();
+  } else {
+    console.log(`clicked on ${todoItem.dataset.id} item`);
+  }
+});
+
 refreshProjectNav();
