@@ -9,19 +9,19 @@ let activeProjectId = projects[0].id;
 
 const projectNav = document.querySelector("#project-nav");
 
-function refreshNav() {
+function refreshProjectNav() {
   projectNav.innerHTML = "";
   renderNav(projectNav, projects, activeProjectId);
 }
 
-refreshNav();
-
+// monitors the click event on the project nav
+// updates the active project id when a button is clicked
 projectNav.addEventListener("click", (event) => {
   const button = event.target.closest(".nav-button");
   if (!button) return;
 
   activeProjectId = button.value;
-  refreshNav();
+  refreshProjectNav();
 });
 
 const projectFormContainer = document.querySelector("#project-form-container");
@@ -48,3 +48,5 @@ projectForm.addEventListener("submit", (event) => {
   projectFormContainer.style.display = "none";
   projectForm.reset();
 });
+
+refreshProjectNav();
