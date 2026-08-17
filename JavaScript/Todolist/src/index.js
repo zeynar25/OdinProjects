@@ -1,4 +1,5 @@
 import Project from "./scripts/classes/Project.js";
+import TodoItem from "./scripts/classes/TodoItem.js";
 import { renderNav } from "./scripts/nav.js";
 import "./styles.css";
 
@@ -25,11 +26,11 @@ projectNav.addEventListener("click", (event) => {
 });
 
 const projectFormContainer = document.querySelector("#project-form-container");
-const nameInput = document.querySelector("#project-input-name");
+const projectNameInput = document.querySelector("#project-input-name");
 const addProjectBtn = document.querySelector("#add-project-btn");
 addProjectBtn.addEventListener("click", () => {
   projectFormContainer.style.display = "flex";
-  nameInput.focus();
+  projectNameInput.focus();
 });
 
 const closeProjectFormBtn = document.querySelector("#close-project-form-btn");
@@ -41,7 +42,7 @@ const projectForm = document.querySelector("#project-form");
 projectForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const newProject = new Project(nameInput.value);
+  const newProject = new Project(projectNameInput.value);
   projects.push(newProject);
   refreshProjectNav();
 
@@ -60,6 +61,15 @@ const closeTodoFormBtn = document.querySelector("#close-todo-form-btn");
 closeTodoFormBtn.addEventListener("click", () => {
   addTodoBtn.style.display = "block";
   todoFormContainer.style.display = "none";
+});
+
+const todoList = [];
+
+const todoForm = document.querySelector("#todo-form");
+todoForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  // implement the logic to add a new todo item to the active project
 });
 
 refreshProjectNav();
