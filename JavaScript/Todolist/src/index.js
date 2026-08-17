@@ -43,7 +43,7 @@ projectForm.addEventListener("submit", (event) => {
 
   const newProject = new Project(nameInput.value);
   projects.push(newProject);
-  refreshNav();
+  refreshProjectNav();
 
   projectFormContainer.style.display = "none";
   projectForm.reset();
