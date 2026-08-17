@@ -9,21 +9,75 @@
     <div id="projects">
       <h1 class="project-title">Projects</h1>
       <nav id="project-nav"></nav>
-      <button id="add-project-btn">+ Add Project </button>
-      <div id="project-form-container">
-        <button id="close-form-btn">x</button>
+      <button id="add-project-btn">+ Add Project</button>
+      <div id="project-form-container" class="form-container">
+        <button id="close-project-form-btn" class="form-btn close-form-btn">
+          x
+        </button>
         <h2 id="project-form-title">Add Project</h2>
         <form id="project-form">
-        <input
-          id="project-input-name"
-          type="text"
-          name="project-name"
-          placeholder="Project Name"
-          required
-        />
-        <button type="submit">Add Project</button>
+          <input
+            id="project-input-name"
+            type="text"
+            name="project-name"
+            placeholder="Project Name"
+            required
+          />
+          <button type="submit">Add Project</button>
+        </form>
       </div>
     </div>
-    <div id="project-todo-list"></div>
+    <div id="project-todo-list">
+      <div id="todo-list"></div>
+      <button id="add-todo-btn">+ Add Todo</button>
+      <div id="todo-form-container" class="form-container">
+        <form id="todo-form">
+          <input
+            id="todo-input-name"
+            type="text"
+            name="todo-name"
+            placeholder="Task Name"
+            required
+          />
+          <input
+            id="todo-input-description"
+            type="text"
+            name="todo-description"
+            placeholder="Description"
+            required
+          />
+          <div id="todo-form-additives">
+            <input
+              id="todo-input-due-date"
+              type="date"
+              name="todo-due-date"
+              placeholder="Todo Due Date"
+              required
+            />
+            <select id="todo-input-priority" name="todo-priority" required>
+              <option value="1">High</option>
+              <option value="2">Medium</option>
+              <option value="3" selected>Low</option>
+            </select>
+            <div id="todo-btns">
+              <button
+                id="close-todo-form-btn"
+                class="form-btn close-form-btn"
+                title="cancel"
+              >
+                x
+              </button>
+              <button
+                type="submit"
+                title="add todo"
+                class="form-btn add-todo-btn"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </body>
 </html>

@@ -32,8 +32,8 @@ addProjectBtn.addEventListener("click", () => {
   nameInput.focus();
 });
 
-const closeFormBtn = document.querySelector("#close-form-btn");
-closeFormBtn.addEventListener("click", () => {
+const closeProjectFormBtn = document.querySelector("#close-project-form-btn");
+closeProjectFormBtn.addEventListener("click", () => {
   projectFormContainer.style.display = "none";
 });
 
@@ -47,6 +47,19 @@ projectForm.addEventListener("submit", (event) => {
 
   projectFormContainer.style.display = "none";
   projectForm.reset();
+});
+
+const todoFormContainer = document.querySelector("#todo-form-container");
+const addTodoBtn = document.querySelector("#add-todo-btn");
+addTodoBtn.addEventListener("click", () => {
+  addTodoBtn.style.display = "none";
+  todoFormContainer.style.display = "flex";
+});
+
+const closeTodoFormBtn = document.querySelector("#close-todo-form-btn");
+closeTodoFormBtn.addEventListener("click", () => {
+  addTodoBtn.style.display = "block";
+  todoFormContainer.style.display = "none";
 });
 
 refreshProjectNav();
