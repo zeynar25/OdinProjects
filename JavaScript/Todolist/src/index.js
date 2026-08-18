@@ -4,10 +4,26 @@ import { renderNav } from "./scripts/nav.js";
 import { renderTodoList } from "./scripts/todolist.js";
 import "./styles.css";
 
-console.log("Todo List App");
-
 const projects = [new Project("Default", "The default project")];
 let activeProjectId = projects[0].id;
+let activeYear = new Date().getFullYear();
+let activeMonth = new Date().toLocaleString("default", { month: "long" });
+
+let yearsList = [activeYear];
+const monthsList = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 const projectNav = document.querySelector("#project-nav");
 
@@ -29,6 +45,7 @@ projectNav.addEventListener("click", (event) => {
 const projectFormContainer = document.querySelector("#project-form-container");
 const projectNameInput = document.querySelector("#project-input-name");
 const addProjectBtn = document.querySelector("#add-project-btn");
+
 addProjectBtn.addEventListener("click", () => {
   projectFormContainer.style.display = "flex";
   projectNameInput.focus();
@@ -51,9 +68,21 @@ projectForm.addEventListener("submit", (event) => {
   projectForm.reset();
 });
 
+const closeTodoListDateBtn = document.querySelector(
+  "#close-todo-list-date-btn",
+);
+closeTodoListDateBtn.addEventListener("click", () => {
+  todoListDateBtn.dataset.year = "";
+  todoListDateBtn.dataset.month = "";
+  todoListMonths.style.display = "none";
+  todoListYears.style.display = "flex";
+  todoListDate.style.display = "none";
+});
+
 const todoInputName = document.querySelector("#todo-input-name");
 const todoFormContainer = document.querySelector("#todo-form-container");
 const addTodoBtn = document.querySelector("#add-todo-btn");
+
 addTodoBtn.addEventListener("click", () => {
   addTodoBtn.style.display = "none";
   todoFormContainer.style.display = "flex";
@@ -67,11 +96,65 @@ closeTodoFormBtn.addEventListener("click", () => {
 });
 
 const todoList = [];
-
 const todoListContainer = document.querySelector("#todo-list");
-function refreshTodoList() {
+const todoListDateBtn = document.querySelector("#todo-list-date-btn");
+const todoListDate = document.querySelector("#todo-list-date");
+
+todoListDateBtn.addEventListener("click", () => {
+  todoListDate.style.display = "flex";
+});
+
+const todoListMonths = document.querySelector("#todo-list-months");
+todoListMonths.innerHTML = "";
+monthsList.forEach((month) => {
+  const monthBtn = document.createElement("button");
+  monthBtn.addEventListener("click", () => {
+    todoListDateBtn.dataset.month = month;
+    activeMonth = month;
+    activeYear = parseInt(todoListDateBtn.dataset.year, 10);
+
+    todoListYears.style.display = "flex";
+    todoListMonths.style.display = "none";
+    todoListDate.style.display = "none";
+
+    refreshTodoListByYearMonth(activeYear, activeMonth);
+  });
+  monthBtn.textContent = month;
+  monthBtn.classList.add("todo-list-month");
+  todoListMonths.appendChild(monthBtn);
+});
+
+function refreshTodoListByYearMonth(year, month) {
+  todoListDateBtn.textContent = `${month} ${year}`;
   todoListContainer.innerHTML = "";
-  renderTodoList(todoListContainer, todoList);
+
+  const filteredTodoList = todoList.filter((todo) => {
+    const todoDate = new Date(todo.dueDate);
+
+    return (
+      todoDate.getFullYear() === year &&
+      monthsList[todoDate.getMonth() + 1] === month
+    );
+  });
+
+  renderTodoList(todoListContainer, filteredTodoList);
+}
+
+function renderTodoYears() {
+  todoListYears.innerHTML = "";
+  yearsList.sort((a, b) => a - b);
+  yearsList.forEach((year) => {
+    const yearBtn = document.createElement("button");
+    yearBtn.classList.add("todo-list-year");
+    yearBtn.addEventListener("click", () => {
+      todoListYears.style.display = "none";
+      todoListMonths.style.display = "flex";
+      todoListDateBtn.dataset.month = "";
+      todoListDateBtn.dataset.year = year;
+    });
+    yearBtn.textContent = year;
+    todoListYears.appendChild(yearBtn);
+  });
 }
 
 const todoInputDueDate = document.querySelector("#todo-input-due-date");
@@ -97,7 +180,12 @@ todoForm.addEventListener("submit", (event) => {
   todoList.push(newTodo);
 
   console.log(`adding ${newTodo.title} item`);
-  console.log(todoList);
+
+  const todoYear = new Date(newTodo.dueDate).getFullYear();
+  if (!yearsList.includes(todoYear)) {
+    yearsList.push(todoYear);
+    renderTodoYears();
+  }
 
   todoFormContainer.style.display = "none";
   todoForm.reset();
@@ -105,7 +193,7 @@ todoForm.addEventListener("submit", (event) => {
 
   addTodoBtn.style.display = "block";
 
-  refreshTodoList();
+  refreshTodoListByYearMonth(activeYear, activeMonth);
 });
 
 const todoEditFormContainer = document.querySelector(
@@ -144,7 +232,7 @@ todoEditForm.addEventListener("submit", (event) => {
   if (todoList[index].priority !== parseInt(todoEditInputPriority.value, 10)) {
     todoList[index].priority = parseInt(todoEditInputPriority.value, 10);
   }
-  refreshTodoList();
+  refreshTodoListByYearMonth(activeYear, activeMonth);
 });
 
 const todoEditInputName = document.querySelector("#todo-edit-input-name");
@@ -215,14 +303,25 @@ todoListContainer.addEventListener("click", (event) => {
   } else if (action === "done") {
     console.log(`marking ${id} item as done`);
     todoList[index].isDone = !todoList[index].isDone;
-    refreshTodoList();
+    refreshTodoListByYearMonth(activeYear, activeMonth);
   } else if (action === "delete") {
     console.log(`deleting ${id} item`);
     todoList.splice(index, 1);
-    refreshTodoList();
+    refreshTodoListByYearMonth(activeYear, activeMonth);
   } else {
     console.log(`clicked on ${todoItem.dataset.id} item`);
   }
 });
 
+const todoListYears = document.querySelector("#todo-list-years");
+
 refreshProjectNav();
+renderTodoYears();
+refreshTodoListByYearMonth(activeYear, activeMonth);
+
+// next goal
+// - sort task by date: keys -> year > month > day
+// - render by month and year
+// - render todo by day by priority
+// - render overdue by date then priority
+// - save data with web storage API

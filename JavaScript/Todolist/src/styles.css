@@ -120,6 +120,43 @@ body {
   padding: 80px 30px;
 }
 
+#todo-list-date-btn {
+  border: 0;
+  padding: 10px 20px;
+  background-color: white;
+  border: 1px solid white;
+  width: fit-content;
+  border-radius: 5px;
+}
+
+#todo-list-date-btn:hover {
+  background-color: rgb(0, 0, 0, 0.2);
+  border: 1px solid black;
+}
+
+#todo-list-months {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  display: none;
+}
+
+.todo-list-year,
+.todo-list-month {
+  border: 1;
+  padding: 5px 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.todo-list-year:hover,
+.todo-list-month:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: black;
+}
+
 #todo-list {
   display: flex;
   flex-direction: column;
