@@ -133,11 +133,21 @@ function refreshTodoListByYearMonth(year, month) {
 
     return (
       todoDate.getFullYear() === year &&
-      monthsList[todoDate.getMonth() + 1] === month
+      monthsList[todoDate.getMonth()] === month
     );
   });
 
-  renderTodoList(todoListContainer, filteredTodoList);
+  const sortedAndFilteredTodoList = filteredTodoList.sort((a, b) => {
+    const dateA = new Date(a.dueDate).getDate();
+    const dateB = new Date(b.dueDate).getDate();
+
+    if (dateA === dateB) {
+      return a.priority - b.priority;
+    }
+    return dateA - dateB;
+  });
+
+  renderTodoList(todoListContainer, sortedAndFilteredTodoList);
 }
 
 function renderTodoYears() {
