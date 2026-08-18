@@ -4,7 +4,9 @@ import { renderNav } from "./scripts/nav.js";
 import { renderTodoList } from "./scripts/todolist.js";
 import "./styles.css";
 
-const projects = [new Project("Default", "The default project")];
+const STORAGE_KEY = "todolist.appState.v1";
+
+const projects = [new Project("Default")];
 let activeProjectId = projects[0].id;
 let activeYear = new Date().getFullYear();
 let activeMonth = new Date().toLocaleString("default", { month: "long" });
@@ -25,6 +27,125 @@ const monthsList = [
   "December",
 ];
 
+function getDefaultMonthName() {
+  return monthsList[new Date().getMonth()];
+}
+
+function buildSerializableState() {
+  return {
+    projects: projects.map((project) => ({
+      id: project.id,
+      name: project.name,
+    })),
+    todoList: todoList.map((todo) => ({
+      id: todo.id,
+      projectId: todo.projectId,
+      title: todo.title,
+      description: todo.description ?? "",
+      dueDate: todo.dueDate,
+      priority: Number(todo.priority) || 3,
+      isDone: Boolean(todo.isDone),
+    })),
+    activeProjectId,
+    activeYear,
+    activeMonth,
+    yearsList: [...new Set(yearsList)],
+  };
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(buildSerializableState()));
+  } catch (error) {
+    console.error("Failed to save app state:", error);
+  }
+}
+
+function loadState() {
+  const defaultMonth = getDefaultMonthName();
+
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      activeMonth = defaultMonth;
+      return;
+    }
+
+    const parsed = JSON.parse(raw);
+
+    const loadedProjects = Array.isArray(parsed.projects)
+      ? parsed.projects
+          .filter((project) => project && typeof project.id === "string")
+          .map((project) => ({
+            id: project.id,
+            name: String(project.name ?? "Untitled Project"),
+          }))
+      : [];
+
+    if (loadedProjects.length === 0) {
+      const fallback = new Project("Default");
+      loadedProjects.push({
+        id: fallback.id,
+        name: fallback.name,
+      });
+    }
+
+    projects.splice(0, projects.length, ...loadedProjects);
+
+    const loadedTodos = Array.isArray(parsed.todoList)
+      ? parsed.todoList
+          .filter((todo) => todo && typeof todo.id === "string")
+          .map((todo) => ({
+            id: todo.id,
+            projectId: String(todo.projectId ?? projects[0].id),
+            title: String(todo.title ?? ""),
+            description: String(todo.description ?? ""),
+            dueDate: String(todo.dueDate ?? ""),
+            priority: Number(todo.priority) || 3,
+            isDone: Boolean(todo.isDone),
+          }))
+      : [];
+
+    todoList.splice(0, todoList.length, ...loadedTodos);
+
+    const currentYear = new Date().getFullYear();
+    const yearsFromTodos = todoList
+      .map((todo) => new Date(todo.dueDate).getFullYear())
+      .filter((year) => Number.isInteger(year) && !Number.isNaN(year));
+
+    const persistedYears = Array.isArray(parsed.yearsList)
+      ? parsed.yearsList
+          .map((year) => Number(year))
+          .filter((year) => Number.isInteger(year))
+      : [];
+
+    const mergedYears = [
+      ...new Set([currentYear, ...persistedYears, ...yearsFromTodos]),
+    ].sort((a, b) => a - b);
+
+    yearsList.splice(0, yearsList.length, ...mergedYears);
+
+    const hasActiveProject = projects.some(
+      (project) => project.id === parsed.activeProjectId,
+    );
+    activeProjectId = hasActiveProject
+      ? parsed.activeProjectId
+      : projects[0].id;
+
+    const persistedYear = Number(parsed.activeYear);
+    activeYear = yearsList.includes(persistedYear)
+      ? persistedYear
+      : currentYear;
+
+    activeMonth = monthsList.includes(parsed.activeMonth)
+      ? parsed.activeMonth
+      : defaultMonth;
+  } catch (error) {
+    console.error("Failed to load app state:", error);
+    activeMonth = defaultMonth;
+  }
+}
+
 const projectNav = document.querySelector("#project-nav");
 
 function refreshProjectNav() {
@@ -40,6 +161,8 @@ projectNav.addEventListener("click", (event) => {
 
   activeProjectId = button.value;
   refreshProjectNav();
+  refreshTodoListByYearMonth(activeYear, activeMonth);
+  saveState();
 });
 
 const projectFormContainer = document.querySelector("#project-form-container");
@@ -63,6 +186,7 @@ projectForm.addEventListener("submit", (event) => {
   const newProject = new Project(projectNameInput.value);
   projects.push(newProject);
   refreshProjectNav();
+  saveState();
 
   projectFormContainer.style.display = "none";
   projectForm.reset();
@@ -118,6 +242,7 @@ monthsList.forEach((month) => {
     todoListDate.style.display = "none";
 
     refreshTodoListByYearMonth(activeYear, activeMonth);
+    saveState();
   });
   monthBtn.textContent = month;
   monthBtn.classList.add("todo-list-month");
@@ -129,6 +254,10 @@ function refreshTodoListByYearMonth(year, month) {
   todoListContainer.innerHTML = "";
 
   const filteredTodoList = todoList.filter((todo) => {
+    if (todo.projectId !== activeProjectId) {
+      return false;
+    }
+
     const todoDate = new Date(todo.dueDate);
 
     return (
@@ -181,6 +310,7 @@ todoForm.addEventListener("submit", (event) => {
   const todoInputPriority = document.querySelector("#todo-input-priority");
 
   const newTodo = new TodoItem(
+    activeProjectId,
     todoInputName.value,
     todoInputDescription.value,
     todoInputDueDate.value,
@@ -204,6 +334,7 @@ todoForm.addEventListener("submit", (event) => {
   addTodoBtn.style.display = "block";
 
   refreshTodoListByYearMonth(activeYear, activeMonth);
+  saveState();
 });
 
 const todoEditFormContainer = document.querySelector(
@@ -243,6 +374,7 @@ todoEditForm.addEventListener("submit", (event) => {
     todoList[index].priority = parseInt(todoEditInputPriority.value, 10);
   }
   refreshTodoListByYearMonth(activeYear, activeMonth);
+  saveState();
 });
 
 const todoEditInputName = document.querySelector("#todo-edit-input-name");
@@ -314,10 +446,12 @@ todoListContainer.addEventListener("click", (event) => {
     console.log(`marking ${id} item as done`);
     todoList[index].isDone = !todoList[index].isDone;
     refreshTodoListByYearMonth(activeYear, activeMonth);
+    saveState();
   } else if (action === "delete") {
     console.log(`deleting ${id} item`);
     todoList.splice(index, 1);
     refreshTodoListByYearMonth(activeYear, activeMonth);
+    saveState();
   } else {
     console.log(`clicked on ${todoItem.dataset.id} item`);
   }
@@ -325,13 +459,7 @@ todoListContainer.addEventListener("click", (event) => {
 
 const todoListYears = document.querySelector("#todo-list-years");
 
+loadState();
 refreshProjectNav();
 renderTodoYears();
 refreshTodoListByYearMonth(activeYear, activeMonth);
-
-// next goal
-// - sort task by date: keys -> year > month > day
-// - render by month and year
-// - render todo by day by priority
-// - render overdue by date then priority
-// - save data with web storage API
