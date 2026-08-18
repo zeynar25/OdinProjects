@@ -101,8 +101,83 @@ todoForm.addEventListener("submit", (event) => {
 
   todoFormContainer.style.display = "none";
   todoForm.reset();
+  todoInputDueDate.value = new Date().toISOString().split("T")[0];
+
+  addTodoBtn.style.display = "block";
 
   refreshTodoList();
+});
+
+const todoEditFormContainer = document.querySelector(
+  "#todo-edit-form-container",
+);
+
+const closeTodoEditFormBtn = document.querySelector(
+  "#close-todo-edit-form-btn",
+);
+closeTodoEditFormBtn.addEventListener("click", () => {
+  todoEditFormContainer.style.display = "none";
+});
+
+const todoEditForm = document.querySelector("#todo-edit-form");
+todoEditForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  todoEditFormContainer.style.display = "none";
+
+  const index = todoEditFormContainer.dataset.index;
+  if (todoList[index] === undefined) {
+    console.error("Item not found in todoList");
+    return;
+  }
+
+  if (todoList[index].title !== todoEditInputName.value) {
+    todoList[index].title = todoEditInputName.value;
+  }
+
+  if (todoList[index].description !== todoEditInputDescription.value) {
+    todoList[index].description = todoEditInputDescription.value;
+  }
+  if (todoList[index].dueDate !== todoEditInputDueDate.value) {
+    todoList[index].dueDate = todoEditInputDueDate.value;
+  }
+  if (todoList[index].priority !== parseInt(todoEditInputPriority.value, 10)) {
+    todoList[index].priority = parseInt(todoEditInputPriority.value, 10);
+  }
+  refreshTodoList();
+});
+
+const todoEditInputName = document.querySelector("#todo-edit-input-name");
+const todoEditInputDescription = document.querySelector(
+  "#todo-edit-input-description",
+);
+const todoEditInputDueDate = document.querySelector(
+  "#todo-edit-input-due-date",
+);
+const todoEditInputPriority = document.querySelector(
+  "#todo-edit-input-priority",
+);
+
+const editFields = [
+  todoEditInputName,
+  todoEditInputDescription,
+  todoEditInputDueDate,
+  todoEditInputPriority,
+];
+
+const submitEditFormButton = todoEditForm.querySelector(
+  "#submit-edit-form-btn",
+);
+
+// check if the value of the input has changed from the previous value
+editFields.forEach((field) => {
+  field.addEventListener("input", (event) => {
+    if (field.value !== field.dataset.previousValue) {
+      submitEditFormButton.disabled = false;
+    } else {
+      submitEditFormButton.disabled = true;
+    }
+  });
 });
 
 todoListContainer.addEventListener("click", (event) => {
@@ -122,7 +197,21 @@ todoListContainer.addEventListener("click", (event) => {
 
   if (action === "edit") {
     console.log(`editing ${id} item`);
-    // to implement
+    todoEditFormContainer.dataset.index = index;
+    todoEditFormContainer.style.display = "flex";
+
+    todoEditInputName.value = todoList[index].title;
+    todoEditInputName.dataset.previousValue = todoList[index].title;
+
+    todoEditInputDescription.value = todoList[index].description;
+    todoEditInputDescription.dataset.previousValue =
+      todoList[index].description;
+
+    todoEditInputDueDate.value = todoList[index].dueDate;
+    todoEditInputDueDate.dataset.previousValue = todoList[index].dueDate;
+
+    todoEditInputPriority.value = todoList[index].priority;
+    todoEditInputPriority.dataset.previousValue = todoList[index].priority;
   } else if (action === "done") {
     console.log(`marking ${id} item as done`);
     todoList[index].isDone = !todoList[index].isDone;

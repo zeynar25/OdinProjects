@@ -64,7 +64,7 @@ body {
   padding: 1rem 1.25rem;
 }
 
-#project-form-container {
+.floating-centered-modal {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -120,6 +120,13 @@ body {
   padding: 80px 30px;
 }
 
+#todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
 #todo-form-container {
   display: none;
   width: 100%;
@@ -143,6 +150,76 @@ body {
   margin-left: auto;
 }
 
-.add-todo-btn:hover {
+#add-todo-btn {
+  border: 0;
+  margin-top: 20px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#add-todo-btn:hover {
   background-color: rgba(27, 181, 60, 0.5);
+}
+
+.todo-item {
+  display: flex;
+  gap: 15px;
+}
+
+.todo-item .todo-texts {
+  border: 0;
+  background: white;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  text-align: left;
+}
+
+.todo-item .done-btn,
+.todo-item .edit-btn,
+.todo-item .delete-btn {
+  margin: auto 0;
+  height: fit-content;
+  border: 1;
+  border-radius: 5px;
+  padding: 5px 10px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.edit-btn {
+  border: 0;
+  width: 100%;
+  text-align: left;
+}
+
+.todo-item .delete-btn {
+  opacity: 0;
+}
+
+.todo-item:hover .edit-btn {
+  box-shadow: 0 6px 40px rgba(0, 0, 0, 0.2);
+}
+
+.todo-item:hover .delete-btn {
+  opacity: 1;
+}
+
+.todo-item:focus-within .delete-btn {
+  opacity: 1;
+}
+
+.low-priority .edit-btn {
+  background: rgba(0, 128, 0, 0.5);
+}
+
+.high-priority .edit-btn {
+  background: rgba(128, 0, 0, 0.5);
+}
+
+.medium-priority .edit-btn {
+  background: rgba(255, 165, 0, 0.5);
 }

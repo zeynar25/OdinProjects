@@ -10,7 +10,10 @@
       <h1 class="project-title">Projects</h1>
       <nav id="project-nav"></nav>
       <button id="add-project-btn">+ Add Project</button>
-      <div id="project-form-container" class="form-container">
+      <div
+        id="project-form-container"
+        class="form-container floating-centered-modal"
+      >
         <button id="close-project-form-btn" class="form-btn close-form-btn">
           x
         </button>
@@ -75,6 +78,47 @@
               </button>
             </div>
           </div>
+        </form>
+      </div>
+      <div
+        id="todo-edit-form-container"
+        class="form-container floating-centered-modal"
+      >
+        <button id="close-todo-edit-form-btn" class="form-btn close-form-btn">
+          x
+        </button>
+        <h2 id="todo-form-title">Edit Todo</h2>
+        <form id="todo-edit-form">
+          <input
+            id="todo-edit-input-name"
+            type="text"
+            name="todo-name"
+            placeholder="Task Name"
+            required
+          />
+          <input
+            id="todo-edit-input-description"
+            type="text"
+            name="todo-description"
+            placeholder="Description"
+          />
+          <div id="todo-form-additives">
+            <input
+              id="todo-edit-input-due-date"
+              type="date"
+              name="todo-due-date"
+              placeholder="Todo Due Date"
+              required
+            />
+            <select id="todo-edit-input-priority" name="todo-priority" required>
+              <option value="1">High</option>
+              <option value="2">Medium</option>
+              <option value="3" selected>Low</option>
+            </select>
+          </div>
+          <button id="submit-edit-form-btn" type="submit" disabled>
+            Save Changes
+          </button>
         </form>
       </div>
     </div>
