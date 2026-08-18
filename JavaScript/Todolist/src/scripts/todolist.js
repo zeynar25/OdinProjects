@@ -3,6 +3,8 @@ export function renderTodoList(todolist, items) {
     const todoItem = document.createElement("div");
     todoItem.classList.add("todo-item");
 
+    todoItem.dataset.id = item.id;
+
     const title = document.createElement("h3");
     title.textContent = item.title;
     if (item.isDone) {
@@ -10,7 +12,9 @@ export function renderTodoList(todolist, items) {
     }
     todoItem.appendChild(title);
 
-    todoItem.dataset.id = item.id;
+    const description = document.createElement("p");
+    description.textContent = item.description;
+    todoItem.appendChild(description);
 
     const editBtn = document.createElement("button");
     editBtn.textContent = "Edit";
