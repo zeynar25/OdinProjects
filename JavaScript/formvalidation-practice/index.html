@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Validation</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>I'm collecting then validating data</h1>
+      <form action="" method="get" id="form">
+        <div class="input-container">
+          <label for="input-email">Email:</label>
+          <input type="email" name="input-email" id="input-email" />
+        </div>
+        <div class="input-container">
+          <label for="input-country">Country:</label>
+          <input type="text" name="input-country" id="input-country" />
+        </div>
+        <div class="input-container">
+          <label for="input-postal">City Postal Code:</label>
+          <input type="text" name="input-postal" id="input-postal" />
+        </div>
+        <div class="input-container">
+          <label for="input-password">Password:</label>
+          <input type="password" name="input-password" id="input-password" />
+        </div>
+        <div class="input-container">
+          <label for="input-password-confirmation"
+            >Password Confirmation:</label
+          >
+          <input
+            type="password"
+            name="input-password-confirmation"
+            id="input-password-confirmation"
+          />
+        </div>
+        <button type="submit">Validate</button>
+      </form>
+    </div>
+
+    <script src="./script.js" defer></script>
+  </body>
+</html>
