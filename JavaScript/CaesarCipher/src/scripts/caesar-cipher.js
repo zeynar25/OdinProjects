@@ -1,10 +1,40 @@
 import capitalize from "./capitalize.js";
 
-export default function caesarCipher(str, key) {
+function encrypt(str, key) {
+  if (typeof str !== "string") {
+    throw new Error("Input must be a string");
+  }
+
+  if (typeof key !== "number") {
+    throw new Error("Key must be a number");
+  }
+
   key %= 26;
   let result = "";
 
   let capitalizedStr = str.toUpperCase();
+
+  for (const char of capitalizedStr) {
+    result += isLetter(char) ? shiftChar(char, key) : char;
+  }
+
+  return result;
+}
+
+function decrypt(str, key) {
+  if (typeof str !== "string") {
+    throw new Error("Input must be a string");
+  }
+
+  if (typeof key !== "number") {
+    throw new Error("Key must be a number");
+  }
+
+  key %= 26;
+  key = -key;
+  let result = "";
+
+  let capitalizedStr = str.toLowerCase();
 
   for (const char of capitalizedStr) {
     result += isLetter(char) ? shiftChar(char, key) : char;
@@ -26,3 +56,5 @@ function shiftChar(char, key) {
 
   return String.fromCharCode(shiftedCode);
 }
+
+export { encrypt, decrypt };
