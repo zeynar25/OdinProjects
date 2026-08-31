@@ -1,6 +1,6 @@
-export default function capitalize(s) {
-  if (typeof s !== "string") {
+export default function capitalize(str) {
+  if (typeof str !== "string") {
     throw new Error("Input must be a string");
   }
-  return s.charAt(0).toUpperCase() + s.slice(1);
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
