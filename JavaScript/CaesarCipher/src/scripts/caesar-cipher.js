@@ -1,5 +1,3 @@
-import capitalize from "./capitalize.js";
-
 function encrypt(str, key) {
   if (typeof str !== "string") {
     throw new Error("Input must be a string");
@@ -12,9 +10,7 @@ function encrypt(str, key) {
   key %= 26;
   let result = "";
 
-  let capitalizedStr = str.toUpperCase();
-
-  for (const char of capitalizedStr) {
+  for (const char of str.toUpperCase()) {
     result += isLetter(char) ? shiftChar(char, key) : char;
   }
 
@@ -34,9 +30,7 @@ function decrypt(str, key) {
   key = -key;
   let result = "";
 
-  let capitalizedStr = str.toLowerCase();
-
-  for (const char of capitalizedStr) {
+  for (const char of str.toLowerCase()) {
     result += isLetter(char) ? shiftChar(char, key) : char;
   }
 
