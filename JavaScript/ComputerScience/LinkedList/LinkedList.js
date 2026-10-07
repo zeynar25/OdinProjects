@@ -1,20 +1,20 @@
 import Node from "./Node.js";
 
 export default class LinkedList {
-  constructor(arr) {
-    this.head = null;
-    this.tail = null;
+  constructor(arr = []) {
+    this._head = null;
+    this._tail = null;
     this.n = 0;
 
     if (arr.length > 0) {
       this.n = arr.length;
-      this.head = new Node(arr[0]);
-      this.tail = this.head;
+      this._head = new Node(arr[0]);
+      this._tail = this._head;
 
       for (let i = 0; i < arr.length - 1; i++) {
         let nextNode = new Node(arr[i + 1]);
-        this.tail.next = nextNode;
-        this.tail = nextNode;
+        this._tail.next = nextNode;
+        this._tail = nextNode;
       }
     }
   }
@@ -22,23 +22,23 @@ export default class LinkedList {
   append(value) {
     if (this.n === 0) {
       const newNode = new Node(value);
-      this.head = newNode;
-      this.tail = newNode;
+      this._head = newNode;
+      this._tail = newNode;
     } else {
       const newTail = new Node(value);
-      this.tail.next = newTail;
-      this.tail = newTail;
+      this._tail.next = newTail;
+      this._tail = newTail;
     }
 
     this.n++;
   }
 
   prepend(value) {
-    const newHead = new Node(value, this.head);
-    this.head = newHead;
+    const newHead = new Node(value, this._head);
+    this._head = newHead;
 
     if (this.n === 0) {
-      this.tail = newHead;
+      this._tail = newHead;
     }
 
     this.n++;
@@ -52,14 +52,14 @@ export default class LinkedList {
     if (this.n === 0) {
       return undefined;
     }
-    return this.head.value;
+    return this._head.value;
   }
 
   tail() {
     if (this.n === 0) {
       return undefined;
     }
-    return this.tail.value;
+    return this._tail.value;
   }
 
   at(index) {
@@ -67,7 +67,7 @@ export default class LinkedList {
       return undefined;
     }
 
-    let currentNode = this.head;
+    let currentNode = this._head;
     for (let i = 0; i < index; i++) {
       currentNode = currentNode.next;
     }
@@ -80,19 +80,19 @@ export default class LinkedList {
       return undefined;
     }
 
-    let currentNode = this.head;
-    this.head = this.head.next;
+    let currentNode = this._head;
+    this._head = this._head.next;
     this.n--;
 
     if (this.n === 0) {
-      this.tail = null;
+      this._tail = null;
     }
 
     return currentNode.value;
   }
 
   contains(value) {
-    let currentNode = this.head;
+    let currentNode = this._head;
     while (currentNode) {
       if (currentNode.value === value) {
         return true;
@@ -109,7 +109,7 @@ export default class LinkedList {
       return -1;
     }
 
-    let currentNode = this.head;
+    let currentNode = this._head;
     let index = 0;
     while (currentNode) {
       if (currentNode.value === value) {
@@ -128,7 +128,7 @@ export default class LinkedList {
     }
 
     let str = "";
-    let currentNode = this.head;
+    let currentNode = this._head;
     while (currentNode) {
       str += `( ${currentNode.value} ) -> `;
       currentNode = currentNode.next;
