@@ -6,27 +6,42 @@ export default class LinkedList {
     this.tail = null;
     this.n = 0;
 
-    if (arr) {
-      this.n = 1;
-      this.head = arr[0];
-      this.tail = arr[arr.length - 1];
+    if (arr.length > 0) {
+      this.n = arr.length;
+      this.head = new Node(arr[0]);
+      this.tail = this.head;
 
       for (let i = 0; i < arr.length - 1; i++) {
-        arr[i].next = arr[i + 1];
-        this.n++;
+        let nextNode = new Node(arr[i + 1]);
+        this.tail.next = nextNode;
+        this.tail = nextNode;
       }
     }
   }
 
   append(value) {
-    const newHead = new Node(value, this.head);
-    this.head = newHead;
+    if (this.n === 0) {
+      const newNode = new Node(value);
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      const newTail = new Node(value);
+      this.tail.next = newTail;
+      this.tail = newTail;
+    }
+
+    this.n++;
   }
 
   prepend(value) {
-    const newTail = new Node(value);
-    this.tail.next = newTail;
-    this.tail = newTail;
+    const newHead = new Node(value, this.head);
+    this.head = newHead;
+
+    if (this.n === 0) {
+      this.tail = newHead;
+    }
+
+    this.n++;
   }
 
   size() {
@@ -34,16 +49,22 @@ export default class LinkedList {
   }
 
   head() {
-    return this.head;
+    if (this.n === 0) {
+      return undefined;
+    }
+    return this.head.value;
   }
 
   tail() {
-    return this.tail;
+    if (this.n === 0) {
+      return undefined;
+    }
+    return this.tail.value;
   }
 
   at(index) {
-    if (index > this.n - 1) {
-      return null;
+    if (index < 0 || index > this.n - 1) {
+      return undefined;
     }
 
     let currentNode = this.head;
@@ -51,18 +72,23 @@ export default class LinkedList {
       currentNode = currentNode.next;
     }
 
-    return currentNode;
+    return currentNode.value;
   }
 
   pop() {
-    if (n === 0) {
-      return null;
+    if (this.n === 0) {
+      return undefined;
     }
 
     let currentNode = this.head;
     this.head = this.head.next;
     this.n--;
-    return currentNode;
+
+    if (this.n === 0) {
+      this.tail = null;
+    }
+
+    return currentNode.value;
   }
 
   contains(value) {
@@ -79,7 +105,7 @@ export default class LinkedList {
   }
 
   findIndex(value) {
-    if (n === 0) {
+    if (this.n === 0) {
       return -1;
     }
 
@@ -97,7 +123,7 @@ export default class LinkedList {
   }
 
   toString() {
-    if (n === 0) {
+    if (this.n === 0) {
       return "";
     }
 
