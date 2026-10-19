@@ -6,6 +6,7 @@ function knightMoves(start, end) {
   positions.push(new Node(start));
 
   while (positions.length > 0) {
+    // note: array shifting is inefficient.
     const currentPath = positions.shift();
     const currentPostion = currentPath.value;
 
