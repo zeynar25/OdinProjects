@@ -6,33 +6,27 @@ function knightMoves(start, end) {
   positions.push(new Node(start));
 
   while (positions.length > 0) {
-    let positionLength = positions.length;
-    let processedPositions = 0;
-    while (processedPositions < positionLength) {
-      const currentPath = positions.shift();
-      const currentPostion = currentPath.value;
+    const currentPath = positions.shift();
+    const currentPostion = currentPath.value;
 
-      if (currentPostion[0] === end[0] && currentPostion[1] === end[1]) {
-        const path = [];
-        let currentNode = currentPath;
+    if (currentPostion[0] === end[0] && currentPostion[1] === end[1]) {
+      const path = [];
+      let currentNode = currentPath;
 
-        while (currentNode) {
-          path.push(currentNode.value);
-          currentNode = currentNode.parent;
-        }
-        return path.reverse();
+      while (currentNode) {
+        path.push(currentNode.value);
+        currentNode = currentNode.parent;
       }
+      return path.reverse();
+    }
 
-      const moves = possibleNextKnightPosition(currentPostion);
-      for (const move of moves) {
-        if (!visited.has(move.join(""))) {
-          visited.add(move.join(""));
-          const newPosition = new Node(move, currentPath);
-          positions.push(newPosition);
-        }
+    const moves = possibleNextKnightPosition(currentPostion);
+    for (const move of moves) {
+      if (!visited.has(move.join(""))) {
+        visited.add(move.join(""));
+        const newPosition = new Node(move, currentPath);
+        positions.push(newPosition);
       }
-
-      processedPositions++;
     }
   }
   return null;
