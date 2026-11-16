@@ -4,6 +4,8 @@ export default class GameBoard {
       .fill(null)
       .map(() => Array(10).fill(null));
 
+    this.attackedShots = [];
+    this.hitShots = [];
     this.missedShots = [];
     this.ships = 0;
   }
@@ -28,17 +30,35 @@ export default class GameBoard {
 
   receiveAttack(coordinates) {
     const [x, y] = coordinates;
+
+    const alreadyAttacked = this.attackedShots.some(
+      ([shotX, shotY]) => shotX === x && shotY === y,
+    );
+
+    if (alreadyAttacked) {
+      return { alreadyAttacked: true };
+    }
+
+    this.attackedShots.push(coordinates);
+
     const ship = this.board[x][y];
 
     if (ship) {
-      ship.hit();
+      const wasSunk = ship.isSunk();
 
-      if (ship.isSunk()) {
+      ship.hit();
+      this.hitShots.push(coordinates);
+
+      if (!wasSunk && ship.isSunk()) {
         this.ships -= 1;
       }
-    } else {
-      this.missedShots.push(coordinates);
+
+      return { hit: true, sunk: ship.isSunk() };
     }
+
+    this.missedShots.push(coordinates);
+
+    return { hit: false };
   }
 
   report() {

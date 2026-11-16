@@ -98,6 +98,93 @@ const messageElement = document.getElementById("message");
 renderBoard(yourBoard, player1.gameboard.board);
 renderBoard(enemyBoard, player2.gameboard.board, true);
 
-// while (player1.gameboard.ships > 0 && player2.gameboard.ships > 0) {
+let gameOver = false;
 
-// }
+function playerTurn() {
+  if (gameOver) return;
+
+  messageElement.textContent = `${player1.name}'s turn. Click on the enemy board to attack.`;
+
+  enemyBoard.addEventListener("click", handlePlayerAttack);
+}
+
+function computerTurn() {
+  if (gameOver) return;
+
+  messageElement.textContent = "Enemy's turn";
+
+  setTimeout(() => {
+    let x;
+    let y;
+
+    do {
+      x = Math.floor(Math.random() * 10);
+      y = Math.floor(Math.random() * 10);
+    } while (
+      player1.gameboard.attackedShots.some(
+        ([shotX, shotY]) => shotX === x && shotY === y,
+      )
+    );
+
+    const result = player1.gameboard.receiveAttack([x, y]);
+
+    const attackedCell = yourBoard.querySelector(
+      `[data-x="${x}"][data-y="${y}"]`,
+    );
+
+    if (result.hit) {
+      attackedCell.classList.add("hit");
+      computerTurn();
+    } else {
+      attackedCell.classList.add("miss");
+    }
+
+    if (player1.gameboard.ships === 0) {
+      messageElement.textContent = "You lose!";
+      gameOver = true;
+      return;
+    }
+
+    if (result.hit) {
+      computerTurn();
+    } else {
+      playerTurn();
+    }
+  }, 1000);
+}
+
+function handlePlayerAttack(event) {
+  const cell = event.target.closest(".cell");
+
+  if (!cell || !enemyBoard.contains(cell)) return;
+
+  const x = Number(cell.dataset.x);
+  const y = Number(cell.dataset.y);
+
+  const result = player2.gameboard.receiveAttack([x, y]);
+
+  if (result.alreadyAttacked) return;
+
+  if (result.hit) {
+    cell.classList.add("hit");
+  } else {
+    cell.classList.add("miss");
+  }
+
+  if (player2.gameboard.ships === 0) {
+    messageElement.textContent = "You win!";
+    gameOver = true;
+    enemyBoard.removeEventListener("click", handlePlayerAttack);
+    return;
+  }
+
+  enemyBoard.removeEventListener("click", handlePlayerAttack);
+
+  if (result.hit) {
+    playerTurn();
+  } else {
+    computerTurn();
+  }
+}
+
+playerTurn();
