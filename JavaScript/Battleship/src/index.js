@@ -45,7 +45,7 @@ function populateBoard(ships, gameboard) {
   }
 }
 
-function renderBoard(boardElement, board) {
+function renderBoard(boardElement, board, enemy = false) {
   boardElement.innerHTML = "";
 
   board.forEach((row, x) => {
@@ -54,7 +54,7 @@ function renderBoard(boardElement, board) {
 
       cellElement.classList.add("cell");
 
-      if (cell) {
+      if (cell && !enemy) {
         cellElement.classList.add("ship");
       }
 
@@ -66,6 +66,8 @@ function renderBoard(boardElement, board) {
     });
   });
 }
+
+// function
 
 let playerName = "Player 1";
 
@@ -91,6 +93,11 @@ populateBoard(fleet2, player2.gameboard);
 
 const yourBoard = document.getElementById("player-board");
 const enemyBoard = document.getElementById("enemy-board");
+const messageElement = document.getElementById("message");
 
 renderBoard(yourBoard, player1.gameboard.board);
-renderBoard(enemyBoard, player2.gameboard.board);
+renderBoard(enemyBoard, player2.gameboard.board, true);
+
+// while (player1.gameboard.ships > 0 && player2.gameboard.ships > 0) {
+
+// }
